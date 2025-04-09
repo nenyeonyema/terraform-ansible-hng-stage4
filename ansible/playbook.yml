@@ -1,0 +1,22 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install Docker & Dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - docker.io
+        - docker-compose
+        - git
+
+    - name: Clone App Repo
+      git:
+        repo: "https://github.com/nenyeonyema/microservices-hng-stage4.git"
+        dest: "/home/chinenyeonyema1/todo"
+
+    - name: Deploy App
+      command: docker-compose up -d
+      args:
+        chdir: "/home/chinenyeonyema1/todo"
+
